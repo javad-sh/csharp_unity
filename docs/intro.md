@@ -2,46 +2,27 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# برنامه نویسی C#
 
-Let's discover **Docusaurus in less than 5 minutes**.
+**زبان برنامه نویسی شارپ چیست ؟**
 
-## Getting Started
+برنامه‌نویسی سی‌شارپ (C#) یکی از محبوب‌ترین زبان‌های برنامه‌نویسی دنیاست که توسط شرکت مایکروسافت طراحی شده و بخش اصلی فریم‌ورک .NET محسوب میشه. این زبان شی‌گراست و از مفاهیم شی گرایی مثل کلاس، وراثت، چندریختی (Polymorphism)، کپسوله‌سازی پشتیبانی می کند.
 
-Get started by **creating a new site**.
+در سی شارپ همه کدها
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+**کاربرد های سی شارپ ؟**
 
-### What you'll need
+ساخت نرم‌افزارهای ویندوزی (Desktop Apps)
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+توسعه وب‌سایت (با ASP.NET)
 
-## Generate a new site
+ساخت بازی (با Unity)
 
-Generate a new Docusaurus site using the **classic template**.
+توسعه اپلیکیشن موبایل (با Xamarin یا MAUI)
 
-The classic template will automatically be added to your project after you run the command:
+برنامه‌نویسی بک‌اند
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+**کد نویسی در سی شارپ چگونه است ؟**
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+در سی شارپ همه ی کدها به جز (using و namespace) باید داخل یک کلاس یا struct یا interface نوشته شوند.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.

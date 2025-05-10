@@ -147,7 +147,10 @@ const config = {
             },
             prism: {
                 theme: prismThemes.github,
-                darkTheme: prismThemes.dracula,
+                darkTheme: prismThemes.vsDark,
+                additionalLanguages: ['csharp', 'java', 'bash'], // زبان‌های اضافی مورد نیاز
+                defaultLanguage: 'csharp', // تنظیم زبان پیش‌فرض
+
             },
         }),
 };
