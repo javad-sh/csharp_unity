@@ -16,12 +16,12 @@ const config = {
 
     // Set the production url of your site here
     url: "https://javad-sh.github.io",
-    baseUrl: "/csharp_unity/",
-
+    baseUrl: "/csharp_unity/", // حتماً با نام ریپو همخوان باشد
+    organizationName: "javad-sh",
+    projectName: "csharp_unity",
+    deploymentBranch: "gh-pages",
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
-    organizationName: "facebook", // Usually your GitHub org/user name.
-    projectName: "docusaurus", // Usually your repo name.
 
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
