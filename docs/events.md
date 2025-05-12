@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
 
 ## EventHandler
 
-### مثال 1
+### مثال 1 : باز و بسته شدن در
 
 #### نکات مثال :
 
@@ -114,7 +114,7 @@ public class DoorListener : MonoBehaviour
 
 ```
 
-### مثال 2
+### مثال 2 : توقف / ادامهٔ بازی
 
 :::caution
 نکته ی مهم :
@@ -185,7 +185,7 @@ public class PauseUI : MonoBehaviour
 
 ```
 
-### مثال 3
+### مثال 3 : تغییر حالت صدای بازی (Mute/Un-Mute)
 
 -   در خط `icon.SetActive(((AudioToggle)sender!).IsMuted)` ما داریم سندر که یک آبجکت هست رو کست (cast) می کنیم. یعنی تبدیل نوع آبجکت به AudioToggle.
     بنابر این ما با این کار می توانیم به مقدار IsMuted دسترسی داشته باشیم. اما در حالت عادی نمی توانستیم بنویسیم `sender.IsMuted`.
@@ -230,9 +230,9 @@ public class MuteIcon : MonoBehaviour
 }
 ```
 
-### مثال 4
+### مثال 4 : رویداد سراسری «Tick» هر ثانیه
 
-- تنها نکته ی این مثال nameof هست برای گرفتن نام تابع به صورت string.
+-   تنها نکته ی این مثال nameof هست برای گرفتن نام تابع به صورت string.
 
 :::tip
 این خط در کد `public static GlobalClock Instance { get; private set; } = null!;` یک الگوی سینگلتون را پیاده سازی می کند اما استفاده از آن توصیه نمی شود و بهتر است از الگوی کلاسیک استفاده شود.
@@ -269,3 +269,337 @@ public class SecondsCounter : MonoBehaviour
     void OnTick(object? _, EventArgs __) => Debug.Log($"Second #{++seconds}");
 }
 ```
+
+## `EventHandler<T>`
+
+این رویداد مانند رویداد قبلی است با این تفاوت که با این روش می توانیم ما می توانیم مقادیر را همراه با رویداد بفرستیم.
+
+### مراحل نوشتن
+
+1. تعریف کلاس EventArgs
+
+این کلاس به شکل زیر و همراه کانستراکتورش نوشته می شود.
+
+این کلاس وظیفه ی نگه داری اطلاعاتی را دارد که می خواهیم همراه با رویداد ارسال کنیم و همیشه از EventArgs ارث بری می کند و می توانید چندی پراپرتی و فیلد داشته باشد.
+
+```
+public class MyEventArgs : EventArgs
+{
+    public int Value { get; }
+    public MyEventArgs(int value)
+    {
+        Value = value;
+    }
+}
+
+```
+
+2. تعریف رویداد در کلاس فرستنده (Publisher)
+
+به شکل زیر رویداد رو تعریف می کنیم و مقادیر لازم را هنگام فراخوانی می دهیم.
+
+```
+public class Publisher
+{
+    public event EventHandler<MyEventArgs>? OnSomethingHappened;
+
+    public void DoSomething()
+    {
+        // رویداد را فراخوانی کن و اطلاعات ارسال کن
+        OnSomethingHappened?.Invoke(this, new MyEventArgs(42));
+    }
+}
+
+```
+
+3. سابسکرایب کردن و دریافت اطلاعات
+
+```
+public class Subscriber
+{
+    public void Subscribe(Publisher publisher)
+    {
+        publisher.OnSomethingHappened += HandleEvent;
+    }
+
+    private void HandleEvent(object? sender, MyEventArgs e)
+    {
+        Console.WriteLine($"Event received! Value: {e.Value}");
+    }
+}
+
+```
+
+### مثال 1 : تغییر سلامتی بازیکن
+
+```
+using UnityEngine;
+using System;
+
+public sealed class HealthChangedEventArgs : EventArgs
+{
+    public int Current { get; }
+    public int Max { get; }
+    public HealthChangedEventArgs(int current, int max)
+    { Current = current; Max = max; }
+}
+
+public class PlayerHealth : MonoBehaviour
+{
+    public event EventHandler<HealthChangedEventArgs>? HealthChanged;
+    [SerializeField] int max = 100;
+    int current;
+
+    void Awake() => current = max;
+
+    public void TakeDamage(int dmg)
+    {
+        current = Mathf.Max(current - dmg, 0);
+        HealthChanged?.Invoke(this, new HealthChangedEventArgs(current, max));
+    }
+}
+
+public class HealthBar : MonoBehaviour
+{
+    [SerializeField] private PlayerHealth player;
+    [SerializeField] private UnityEngine.UI.Image fill;
+
+    void OnEnable()  => player.HealthChanged += UpdateBar;
+    void OnDisable() => player.HealthChanged -= UpdateBar;
+
+    void UpdateBar(object? _, HealthChangedEventArgs e)
+        => fill.fillAmount = (float)e.Current / e.Max;
+}
+
+
+```
+
+### مثال 2 : افزایش امتیاز
+
+```
+using UnityEngine;
+using System;
+
+public class ScoreChangedEventArgs : EventArgs
+{
+    public int NewScore { get; }
+    public ScoreChangedEventArgs(int s) => NewScore = s;
+}
+
+public class ScoreManager : MonoBehaviour
+{
+    public event EventHandler<ScoreChangedEventArgs>? ScoreChanged;
+    int score;
+
+    public void Add(int amount)
+    {
+        score += amount;
+        ScoreChanged?.Invoke(this, new ScoreChangedEventArgs(score));
+    }
+}
+
+public class ScoreText : MonoBehaviour
+{
+    [SerializeField] private ScoreManager manager;
+    [SerializeField] private TMPro.TextMeshProUGUI text;
+
+    void OnEnable()  => manager.ScoreChanged += Refresh;
+    void OnDisable() => manager.ScoreChanged -= Refresh;
+
+    void Refresh(object? _, ScoreChangedEventArgs e)
+        => text.text = $"Score: {e.NewScore}";
+}
+
+
+```
+
+### مثال 3 : جمع آوری آیتم
+
+```
+
+using UnityEngine;
+using System;
+
+public class ItemCollectedEventArgs : EventArgs
+{
+    public string ItemId { get; }
+    public int Quantity { get; }
+    public ItemCollectedEventArgs(string id, int qty)
+    { ItemId = id; Quantity = qty; }
+}
+
+public class Inventory : MonoBehaviour
+{
+    public event EventHandler<ItemCollectedEventArgs>? ItemCollected;
+
+    public void Collect(string id, int qty = 1)
+        => ItemCollected?.Invoke(this, new ItemCollectedEventArgs(id, qty));
+}
+
+public class InventoryLogger : MonoBehaviour
+{
+    [SerializeField] private Inventory inv;
+
+    void OnEnable()  => inv.ItemCollected += Log;
+    void OnDisable() => inv.ItemCollected -= Log;
+
+    void Log(object? _, ItemCollectedEventArgs e)
+        => Debug.Log($"Picked {e.Quantity} × {e.ItemId}");
+}
+
+
+```
+
+### مثال 4 : نمایش خط دیالوگ
+
+```
+using UnityEngine;
+using System;
+
+public class LineShownEventArgs : EventArgs
+{
+    public string Speaker { get; }
+    public string Line { get; }
+    public LineShownEventArgs(string speaker, string line)
+    { Speaker = speaker; Line = line; }
+}
+
+public class DialogueSystem : MonoBehaviour
+{
+    public event EventHandler<LineShownEventArgs>? LineShown;
+
+    public void ShowLine(string speaker, string line)
+    {
+        // نمایش روی UI …
+        LineShown?.Invoke(this, new LineShownEventArgs(speaker, line));
+    }
+}
+
+public class SubtitlePrinter : MonoBehaviour
+{
+    [SerializeField] private DialogueSystem dlg;
+
+    void OnEnable()  => dlg.LineShown += Print;
+    void OnDisable() => dlg.LineShown -= Print;
+
+    void Print(object? _, LineShownEventArgs e)
+        => Debug.Log($"[{e.Speaker}] {e.Line}");
+}
+
+
+```
+
+## رویداد با ‎Action‎ (‎delegate‎ از پیش آماده)
+
+در C#، برای تعریف رویدادها (Events) می‌توان به‌جای تعریف دستی delegate، از نوع‌های از پیش‌تعریف‌شده‌ای مانند Action یا Func استفاده کرد. نوع Action بسیار پرکاربرد است و به‌صورت ساده‌تر و خواناتر، کار همان delegate را انجام می‌دهد.
+
+:::caution
+اکشن علاوه بر رویداد کاربرد های دیگه هم داره اما متداول ترینش همین استفاده برای رویداد هست.
+:::
+
+```
+using UnityEngine;
+using System;
+
+public class Player : MonoBehaviour
+{
+    public event Action<int, int> OnHealthChanged;
+
+    int current = 100;
+    int max = 100;
+
+    public void TakeDamage(int dmg)
+    {
+        current = Mathf.Max(current - dmg, 0);
+        OnHealthChanged?.Invoke(current, max);
+    }
+}
+
+```
+
+```
+using UnityEngine;
+
+public class HealthUI : MonoBehaviour
+{
+    [SerializeField] private Player player;
+
+    void OnEnable()
+    {
+        player.OnHealthChanged += UpdateHealth;
+    }
+
+    void OnDisable()
+    {
+        player.OnHealthChanged -= UpdateHealth;
+    }
+
+    void UpdateHealth(int current, int max)
+    {
+        Debug.Log($"HP: {current}/{max}");
+        // می‌توانید اینجا نوار سلامتی را به‌روزرسانی کنید
+    }
+}
+
+
+```
+
+مثال بدون پارامتر
+
+```
+using UnityEngine;
+using System;
+
+public class Player : MonoBehaviour
+{
+    public Action OnPlayerDied;  // رویدادی که هنگام مرگ اجرا می‌شود
+
+    int health = 100;
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log("Player took damage. Current HP: " + health);
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player died.");
+        OnPlayerDied?.Invoke();  // اجرای تمام توابعی که به این رویداد متصل شده‌اند
+    }
+}
+
+```
+
+```
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    [SerializeField] private Player player;
+
+    void OnEnable()
+    {
+        player.OnPlayerDied += HandlePlayerDeath;
+    }
+
+    void OnDisable()
+    {
+        player.OnPlayerDied -= HandlePlayerDeath;
+    }
+
+    void HandlePlayerDeath()
+    {
+        Debug.Log("Game Over!");
+        // می‌تونی اینجا بازی رو ریست کنی، صحنه رو تغییر بدی، یا UI نشون بدی
+    }
+}
+
+```
+
+## ‎UnityEvent / UnityAction‎ (ویژهٔ یونیتی)
