@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkc_docs=self.webpackChunkc_docs||[]).push([[9535],{5951:e=>{e.exports=JSON.parse('{"categoryGeneratedIndex":{"title":"namespae","slug":"/category/namespae","permalink":"/csharp_unity/docs/category/namespae","sidebar":"tutorialSidebar","navigation":{"next":{"title":"namespace","permalink":"/csharp_unity/docs/namespase/namespace"}}}}')}}]);
