@@ -187,3 +187,75 @@ void Start()
 | محور Z را 0 بگیر                                   | در اکثر 2Dها محور Z بی‌معنی است؛ همیشه مقدار 0 بگیر                                          |
 | از `Vector2` استفاده کن ولی به `Vector3` تبدیلش کن | چون `Bounds` با `Vector3` کار می‌کنه، می‌تونی `Vector2` را با `(Vector3)myVector2` تبدیل کنی |
 | برای 2D فیزیک، BoxCollider2D و Bounds جدا هستند    | در فیزیک دوبعدی از `BoxCollider2D.bounds` برای گرفتن ابعاد استفاده کن                        |
+
+
+---
+
+## 🎯 کاربرد: نمایش محدودهٔ حرکت آبجکت در زمان توسعه (تست)
+
+### سناریو:
+
+می‌خوای مطمئن شی که کاراکتر فقط در یک ناحیه خاص حرکت کنه، یا دشمن فقط در یک ناحیه گشت‌زنی کنه.
+
+### راهکار:
+
+1. با استفاده از `Bounds`، یک محدوده تعریف می‌کنی.
+2. با `Gizmos` این محدوده رو رسم می‌کنی.
+3. در زمان اجرای بازی (Play Mode)، حرکت آبجکت رو درون همون محدوده محدود می‌کنی.
+
+---
+
+## ✅ کد عملی: تعیین محدوده + رسم در Editor
+
+```csharp
+using UnityEngine;
+
+public class MovementBoundary : MonoBehaviour
+{
+    public Bounds moveBounds = new Bounds(Vector3.zero, new Vector3(10, 5, 0));
+    public Transform target;
+
+    void Update()
+    {
+        Vector3 pos = target.position;
+
+        // Clamp موقعیت به داخل محدوده
+        pos = new Vector3(
+            Mathf.Clamp(pos.x, moveBounds.min.x, moveBounds.max.x),
+            Mathf.Clamp(pos.y, moveBounds.min.y, moveBounds.max.y),
+            0
+        );
+
+        target.position = pos;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(moveBounds.center, moveBounds.size);
+    }
+}
+```
+
+---
+
+## 🧪 خروجی این کد:
+
+* در صحنه (Scene View) یک قاب سبز رنگ دیده می‌شه که نشون‌دهندهٔ محدوده حرکته.
+* وقتی `target` (مثلاً کاراکتر) از محدوده خارج شه، خودکار محدود می‌شه.
+* مناسب برای طراحی، تست گیم‌پلی، و جلوگیری از باگ.
+
+---
+
+## 🎮 موارد استفاده مشابه
+
+| کاربرد                   | توضیح                                            |
+| ------------------------ | ------------------------------------------------ |
+| تست حرکت بازیکن          | نمایش ناحیه مجاز برای پلیر                       |
+| ناحیه حرکت دشمن          | Patrol area برای AI                              |
+| محدوده فعال بودن آیتم‌ها | جلوگیری از خروج اشیاء از صحنه                    |
+| ترسیم ناحیه درون UI      | مثلاً Drag کردن آیتم‌ها در UI فقط داخل یک محدوده |
+
+---
+
+اگر خواستی همین رو برای 2D یا با امکانات بیشتر مثل هشدار صوتی هنگام خروج هم بنویسم، بگو تا گسترشش بدم.
