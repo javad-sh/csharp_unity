@@ -787,3 +787,75 @@ public class MyPlayer : MonoBehaviour, PlayerControls.IPlayerActions
 | معماری حرفه‌ای و منعطف                 | C# Callback Interfaces (generated class) |
 
 ---
+
+3. بعد از ساخت input action برای استفاده از کد دو راه وجود دارد.
+
+اولی کد نویسی دستی است که خیلی safe نیست و پیشنهاد نمی شود.
+
+مثالی از کد نویسی دستی :
+
+```
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerController : MonoBehaviour
+{
+    public InputActionAsset inputAsset; // drag & drop فایل inputactions در Inspector
+    private InputAction leftAction;
+
+    void Awake()
+    {
+        // مپ و اکشن را دستی پیدا می‌کنیم
+        var map = inputAsset.FindActionMap("basic");
+        leftAction = map.FindAction("Left");
+
+        leftAction.Enable();
+
+        leftAction.performed += ctx => Debug.Log("⬅️ Left Pressed");
+    }
+
+    void OnDisable()
+    {
+        leftAction.Disable();
+    }
+}
+
+```
+
+روش دوم استفاده از فایل و کلاسی است که خود input action می سازد که این کار توصیه شده و امن تر است.
+
+```
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    private PlayerMovements input;
+
+    void Awake()
+    {
+        input = new PlayerMovements();      // کلاس اتوماتیک
+        input.basic.Enable();               // فعال کردن مپ basic
+
+        input.basic.Left.performed += ctx => Debug.Log("⬅️ Left Pressed");
+        //  ثبت یک "شنونده" (Listener) برای رویداد performed در اکشن Left
+    }
+
+    void OnDisable()
+    {
+        input.basic.Disable();
+    }
+
+    void OnDestroy()
+    {
+        input.Dispose();
+        // برای  آزاد کردن منابع حافظهٔ کلاس PlayerMovements
+    }
+}
+
+```
+
+| وضعیت       | زمان وقوع                   | مثال                               |
+| ----------- | --------------------------- | ---------------------------------- |
+| `started`   | وقتی دکمه فشرده میشه        | انگشت پایین رفت                    |
+| `performed` | وقتی ورودی کامل شد          | تاچ انجام شد یا نگه داشتن تکمیل شد |
+| `canceled`  | اگر ورودی نیمه‌کاره رها بشه | انگشت قبل از hold کامل برداشته شد  |
