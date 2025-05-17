@@ -5,7 +5,6 @@ sidebar_position: 6
 
 # EnhancedTouch
 
-
 حتماً جان! این هم جدول کامل و ساده از همهٔ **ویژگی‌ها، متدها، و موارد استفادهٔ EnhancedTouch** در Unity Input System جدید، همراه با توضیح و مثال کاربردی برای هر مورد. این سبک جدول، خوانا و سریع برای مرور و یادگیریه:
 
 ---
@@ -67,3 +66,72 @@ sidebar_position: 6
 | فقط زمانی اجرا شدن که لمس رخ دهد | `onFingerDown/Up/Move/Tap`                        | بدون نیاز به `Update()`                    |
 
 ---
+
+## مثال
+
+```
+using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using Finger = UnityEngine.InputSystem.EnhancedTouch.Finger;
+
+public class EnhancedTouchExample : MonoBehaviour
+{
+    public GameObject touchMarkerPrefab;  // Prefab دایره یا UI زیر انگشت
+
+    void OnEnable()
+    {
+        EnhancedTouchSupport.Enable();         // فعال‌سازی سیستم
+        Touch.onFingerDown += HandleTouchDown;
+        Touch.onFingerMove += HandleTouchMove;
+        Touch.onFingerUp += HandleTouchUp;
+    }
+
+    void OnDisable()
+    {
+        Touch.onFingerDown -= HandleTouchDown;
+        Touch.onFingerMove -= HandleTouchMove;
+        Touch.onFingerUp -= HandleTouchUp;
+        EnhancedTouchSupport.Disable();        // غیرفعال‌سازی برای بهینه‌سازی
+    }
+
+    void HandleTouchDown(Finger finger)
+    {
+        // ایجاد دایره در محل انگشت
+        Vector2 screenPos = finger.currentTouch.screenPosition;
+        Vector3 worldPos = ScreenToWorld(screenPos);
+
+        GameObject marker = Instantiate(touchMarkerPrefab, worldPos, Quaternion.identity);
+        finger.userData = marker; // ذخیره شیء در انگشت
+    }
+
+    void HandleTouchMove(Finger finger)
+    {
+        if (finger.userData is GameObject marker)
+        {
+            Vector2 screenPos = finger.currentTouch.screenPosition;
+            Vector3 worldPos = ScreenToWorld(screenPos);
+            marker.transform.position = worldPos;
+        }
+    }
+
+    void HandleTouchUp(Finger finger)
+    {
+        if (finger.userData is GameObject marker)
+        {
+            Destroy(marker);
+            finger.userData = null;
+        }
+    }
+
+    Vector3 ScreenToWorld(Vector2 screenPos)
+    {
+        // اگر دو‌بعدی هستی و از دوربین ارتوگرافیک استفاده می‌کنی
+        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+        pos.z = 0;
+        return pos;
+    }
+}
+
+
+```
