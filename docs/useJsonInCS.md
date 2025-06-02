@@ -3,440 +3,163 @@ title: استفاده از json در سی شارپ
 sidebar_position: 21
 ---
 
-روش های زیادی وجود دارد اما دو روش اصلی وجود دارد :
-اگر بخوای فقط دوتا یاد بگیری که ۹۰٪ کارها رو باهاشون انجام بدی، این دو تا رو پیشنهاد می‌کنم:
+## برای استفاده از json در سی شارپ بهترین روش استفاده از Newtonsoft.Json است
 
-System.Text.Json (اگه از .NET 5 به بالا استفاده می‌کنی)
+## مقدمه
 
-Newtonsoft.Json (اگه JSONهای پیچیده داری یا با Unity کار می‌کنی)
-
-روش اول :
-در اینجا روش اول یعنی **استفاده از `System.Text.Json` همراه با کلاس POCO** را به‌صورت کامل و با چند مثال توضیح می‌دهم. این روش، رسمی‌ترین و بهینه‌ترین روش پیشنهادی توسط مایکروسافت در نسخه‌های جدید .NET است.
+**Newtonsoft.Json**‎ (یا همان Json.NET) پرکاربردترین کتابخانهٔ ‎‎JSON‎‎ برای ‎‎.NET‎‎ است؛ امکانات بسیار کاملی برای **سریال‌سازی (Serialization)** و **دیسریال‌سازی (Deserialization)**، **کوئری‌نویسی (LINQ to JSON)**، **پیکربندی پیشرفته** و **گسترش‌پذیری** (Converters، ContractResolvers و …) در اختیار می‌گذارد. در این راهنما تقریباً همهٔ نکات مهم کتابخانه را به‌همراه مثال‌های واقعی در قالبی ساختارمند مرور می‌کنیم.
 
 ---
 
-## ✅ معرفی `System.Text.Json`
-
--   این کتابخانه از .NET Core 3.0 به بعد معرفی شده.
--   نیازی به نصب پکیج ندارد (در .NET 5/6/7/8 به‌صورت داخلی وجود دارد).
--   سریع، کم‌حجم و مدرن است.
--   مناسب برای **ساختارهای JSON مشخص** و **تعریف‌شده با کلاس** (POCO).
-
----
-
-## 📦 فضای نام مورد نیاز:
-
-```csharp
-using System.Text.Json;
-```
-
----
-
-## 📌 مراحل استفاده:
-
-### 1. تعریف کلاس مطابق ساختار JSON (POCO)
-
-فرض کنیم JSON این است:
-
-```json
-{
-    "id": 1,
-    "name": "John Doe",
-    "isActive": true
-}
-```
-
-کلاس معادل:
-
-```csharp
-public class User
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public bool IsActive { get; set; }
-}
-```
-
----
-
-### 2. دریافت JSON از API یا منبع دیگر
-
-مثلاً:
-
-```csharp
-string json = "{\"id\":1,\"name\":\"John Doe\",\"isActive\":true}";
-```
-
----
-
-### 3. تبدیل (Deserialization) JSON به آبجکت C\#
-
-```csharp
-User user = JsonSerializer.Deserialize<User>(json);
-Console.WriteLine(user.Name);  // خروجی: John Doe
-```
-
----
-
-### 4. تبدیل (Serialization) آبجکت به JSON
-
-```csharp
-User newUser = new User { Id = 2, Name = "Sara", IsActive = false };
-string jsonOut = JsonSerializer.Serialize(newUser);
-Console.WriteLine(jsonOut);
-// خروجی: {"Id":2,"Name":"Sara","IsActive":false}
-```
-
----
-
-## 🧪 مثال کامل: خواندن JSON از فایل
-
-```csharp
-using System;
-using System.IO;
-using System.Text.Json;
-
-public class User
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public bool IsActive { get; set; }
-}
-
-class Program
-{
-    static void Main()
-    {
-        string jsonPath = "user.json";
-        string json = File.ReadAllText(jsonPath);
-
-        User user = JsonSerializer.Deserialize<User>(json);
-        Console.WriteLine($"نام: {user.Name} - فعال است؟ {user.IsActive}");
-    }
-}
-```
-
----
-
-## 🧰 پیکربندی JsonSerializerOptions
-
-```csharp
-var options = new JsonSerializerOptions
-{
-    PropertyNameCaseInsensitive = true,
-    WriteIndented = true // برای زیباسازی خروجی JSON
-};
-
-User user = JsonSerializer.Deserialize<User>(json, options);
-```
-
----
-
-## 📚 ویژگی‌ها و محدودیت‌ها:
-
-| ویژگی                                | وضعیت                                              |
-| ------------------------------------ | -------------------------------------------------- |
-| پشتیبانی از camelCase ↔ PascalCase   | ✅ دارد (با `JsonPropertyName`)                    |
-| پشتیبانی از `DateTime` و `enum`      | ✅ دارد                                            |
-| پشتیبانی از Property نامنطبق با JSON | ✅ دارد با `[JsonPropertyName("json_field_name")]` |
-| پشتیبانی از کلاس‌های تو در تو        | ✅ دارد                                            |
-| پشتیبانی از داینامیک                 | ❌ ندارد (ضعیف)                                    |
-| خواندن/نوشتن دستی                    | ✅ با `JsonDocument`                               |
-
----
-
-## 📌 مثال: استفاده از `[JsonPropertyName]`
-
-```csharp
-using System.Text.Json.Serialization;
-
-public class User
-{
-    [JsonPropertyName("user_id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("user_name")]
-    public string Name { get; set; }
-
-    public bool IsActive { get; set; }
-}
-```
-
-برای JSON:
-
-```json
-{
-    "user_id": 42,
-    "user_name": "Ali",
-    "isActive": true
-}
-```
-
----
-
-حتماً، در اینجا روش دوم یعنی استفاده از **`Newtonsoft.Json` (یا Json.NET)** با کلاس POCO را دقیقاً مانند روش اول، کامل و با چند مثال توضیح می‌دهم.
-
----
-
-## ✅ معرفی `Newtonsoft.Json`
-
--   قدیمی‌ترین و پرکاربردترین کتابخانه‌ی JSON در C#
--   پشتیبانی از JSONهای پیچیده، نامنظم، تو در تو، داینامیک، و حتی مقادیر null
--   بسیار پایدار، مناسب برای پروژه‌های بزرگ، حتی Unity (نسبت به System.Text.Json سازگاری بهتری دارد)
-
----
-
-## 📦 نصب (اگر پروژه‌ات .NET Core یا ASP.NET است):
-
-از طریق NuGet:
+## نصب و اولین استفاده
 
 ```bash
-Install-Package Newtonsoft.Json
+# در خط فرمان
+dotnet add package Newtonsoft.Json
+# یا در Unity:
+Install-Package Newtonsoft.Json -Version 13.0.3
 ```
-
----
-
-## 📌 مراحل استفاده:
-
-### 1. تعریف کلاس مطابق JSON (POCO)
-
-فرض کنیم JSON این باشد:
-
-```json
-{
-    "id": 1,
-    "name": "John Doe",
-    "isActive": true
-}
-```
-
-کلاس معادل:
-
-```csharp
-public class User
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public bool IsActive { get; set; }
-}
-```
-
----
-
-### 2. تبدیل JSON به آبجکت (Deserialization)
 
 ```csharp
 using Newtonsoft.Json;
 
-string json = "{\"id\":1,\"name\":\"John Doe\",\"isActive\":true}";
+// شیء نمونه
+var player = new { Id = 1, Name = "John", Score = 980 };
 
-User user = JsonConvert.DeserializeObject<User>(json);
-Console.WriteLine(user.Name); // خروجی: John Doe
-```
-
----
-
-### 3. تبدیل آبجکت به JSON (Serialization)
-
-```csharp
-User newUser = new User { Id = 2, Name = "Sara", IsActive = false };
-
-string jsonOut = JsonConvert.SerializeObject(newUser);
-Console.WriteLine(jsonOut); // خروجی: {"Id":2,"Name":"Sara","IsActive":false}
-```
-
----
-
-## 🧪 مثال کامل از فایل یا API:
-
-```csharp
-using System.IO;
-using Newtonsoft.Json;
-
-public class User
+// سریال‌سازی
+string json = JsonConvert.SerializeObject(player, Formatting.Indented);
+Console.WriteLine(json);
+/*
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public bool IsActive { get; set; }
+  "Id": 1,
+  "Name": "John",
+  "Score": 980
 }
+*/
 
-class Program
+// دیسریال‌سازی
+var restored = JsonConvert.DeserializeObject<Player>(json);
+```
+
+---
+
+## جدول کلیدی‌ترین کلاس‌ها و متدها
+
+| نوع/کلاس                      | متدهای مهم                                                                                       | توضیح کوتاه                                 | مثال ساده                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------------------- |
+| **JsonConvert (static)**      | `SerializeObject(obj, settings?)`<br>`DeserializeObject<T>()`<br>`SerializeXmlNode(XmlNode)`     | ساده‌ترین راه تبدیل شیء/رشته                | `JsonConvert.SerializeObject(list)`                      |
+| **JsonSerializer**            | `Serialize(TextWriter, obj)`<br>`Deserialize<T>(TextReader)`                                     | ‌ عملکردِ پایین‌سطحی و قابلِ تنظیم          | استفاده با `JsonTextWriter`                              |
+| **JsonSerializerSettings**    | پیکربندی عمومی مثل:<br>`Formatting`<br>`NullValueHandling`<br>`ContractResolver`<br>`Converters` | یک‌بار بسازید و در کل پروژه استفاده کنید    | `new JsonSerializerSettings{ NullValueHandling=Ignore }` |
+| **JObject / JArray / JToken** | `Parse(string)`<br>`SelectToken(path)`<br>`ToObject<T>()`                                        | دستکاری ‎‎JSON‎‎ بدون مدل C# (LINQ to JSON) | `JObject.Parse(json)["name"]`                            |
+| **JsonTextReader / Writer**   | جریان‌محور (Forward-only) و بسیار سریع                                                           | برای فایل‌های خیلی بزرگ                     | `using var r = new JsonTextReader(sr)`                   |
+| **JsonConverter (abstract)**  | `WriteJson`, `ReadJson`, `CanConvert`                                                            | ساخت کانورتر سفارشی برای انواع پیچیده       | تبدیل ‎`Vector3`‎ یونیتی                                 |
+| **ContractResolver**          | `ResolveContract`, `CreateProperties`                                                            | کنترل سطحِ فیلد/پراپرتی در سریال‌سازی       | Mask کردن فیلدهای حساس                                   |
+
+---
+
+## ویژگی‌ها و تنظیمات (Attributes/Settings)
+
+| ویژگی/تنظیم                     | کاربرد                                          | مثال                                 |
+| ------------------------------- | ----------------------------------------------- | ------------------------------------ |
+| `[JsonProperty("user_name")]`   | تغییر نام کلید                                  | `public string UserName {get; set;}` |
+| `[JsonIgnore]`                  | حذف پراپرتی از خروجی                            | ‌ رمزها و توکن‌ها                    |
+| `[JsonRequired]`                | خطا اگر مقدار موجود نباشد                       | اعتبارسنجی ورودی API                 |
+| `NullValueHandling.Ignore`      | ننوشتن مقادیر null                              | حجم کمتر JSON                        |
+| `DefaultValueHandling.Populate` | قرار دادن default هنگام دیسریال                 | اطمینان از مقادیر امن                |
+| `ReferenceLoopHandling.Ignore`  | جلوگیری از StackOverflow در گراف‌های شیءِ چرخشی | ساختار درختی گرافیکی                 |
+| `TypeNameHandling.Auto`         | نگهداری نوع واقعی شیء                           | دیسریال چندریختی (Polymorphic)       |
+
+---
+
+## کار با آرایه‌ها و لیست‌ها
+
+```csharp
+string arrJson = "[1,2,3,4]";
+var numbers = JsonConvert.DeserializeObject<List<int>>(arrJson);  // [1,2,3,4]
+
+var playersJson = @"[
+  {""id"":1,""name"":""Ava""},
+  {""id"":2,""name"":""Ben""}
+]";
+JArray jArr = JArray.Parse(playersJson);
+foreach(var jTok in jArr) Console.WriteLine(jTok["name"]);
+```
+
+---
+
+## LINQ to JSON (JPath)
+
+```csharp
+var root = JObject.Parse(json);
+/* مسیر مشابه XPath */
+var expensive = root.SelectTokens("$..items[?(@.price > 100)]");
+```
+
+---
+
+## کانورتر سفارشی (نمونهٔ یونیتی)
+
+```csharp
+class Vector3Converter : JsonConverter<Vector3>
 {
-    static void Main()
+    public override void WriteJson(JsonWriter w, Vector3 v, JsonSerializer s) =>
+        w.WriteValue($"{v.x},{v.y},{v.z}");
+
+    public override Vector3 ReadJson(JsonReader r, Type type, Vector3 existing, bool has, JsonSerializer s)
     {
-        string json = File.ReadAllText("user.json");
-
-        User user = JsonConvert.DeserializeObject<User>(json);
-        Console.WriteLine($"نام: {user.Name} - فعال است؟ {user.IsActive}");
+        var parts = ((string)r.Value).Split(',');
+        return new Vector3(
+            float.Parse(parts[0]), float.Parse(parts[1]), float.Parse(parts[2]));
     }
 }
+// استفاده
+var settings = new JsonSerializerSettings();
+settings.Converters.Add(new Vector3Converter());
+string vJson = JsonConvert.SerializeObject(new Vector3(1,2,3), settings); // "1,2,3"
 ```
 
 ---
 
-## 🧰 پیکربندی JsonConvert با Formatting و Settings
-
-```csharp
-string formattedJson = JsonConvert.SerializeObject(user, Formatting.Indented);
-```
-
-یا:
+## مدیریت خطا
 
 ```csharp
 var settings = new JsonSerializerSettings
 {
-    NullValueHandling = NullValueHandling.Ignore,
-    Formatting = Formatting.Indented
+    Error = (sender, args) =>
+    {
+        Console.WriteLine($"مشکل در «{args.ErrorContext.Path}»: {args.ErrorContext.Error.Message}");
+        args.ErrorContext.Handled = true; // ادامهٔ پردازش
+    }
 };
 
-string json = JsonConvert.SerializeObject(user, settings);
+var result = JsonConvert.DeserializeObject<MyType>(badJson, settings);
 ```
 
 ---
 
-## 📌 استفاده از `[JsonProperty]`
+## بهینه‌سازی‌های سرعت و حافظه
 
-برای زمانی که نام فیلدهای JSON با نام‌های کلاس فرق دارد:
-
-```csharp
-using Newtonsoft.Json;
-
-public class User
-{
-    [JsonProperty("user_id")]
-    public int Id { get; set; }
-
-    [JsonProperty("user_name")]
-    public string Name { get; set; }
-
-    public bool IsActive { get; set; }
-}
-```
-
-JSON:
-
-```json
-{
-    "user_id": 10,
-    "user_name": "Ali",
-    "isActive": true
-}
-```
+1. **Reuse Settings** – یک نمونهٔ `JsonSerializerSettings` بسازید و همه‌جا استفاده کنید.
+2. **Forward-only Reader/Writer** – برای فایل‌های عظیم، به‌جای `Parse` از `JsonTextReader` + `JsonSerializer` بهره بگیرید.
+3. **BufferSize** را در `StreamWriter` / `StreamReader` افزایش دهید.
+4. **Avoid JToken when possible** – هرچه مدل C# صریح‌تر باشد، سریع‌تر است.
 
 ---
 
-## ✅ مزایا نسبت به System.Text.Json
+## مقایسهٔ سریع با ‎`System.Text.Json`‎
 
-| ویژگی                                   | توضیح                       |
-| --------------------------------------- | --------------------------- |
-| پشتیبانی کامل از JSON تو در تو          | ✅ راحت و قابل اطمینان      |
-| پشتیبانی از `dynamic` و `JObject`       | ✅ بسیار قوی                |
-| کار با ساختارهای غیرثابت و پویا         | ✅ ایده‌آل                  |
-| کنترل کامل با Attributeهای مختلف        | ✅ دارد                     |
-| پشتیبانی از نسخه‌های قدیمی .NET و Unity | ✅ بهتر از System.Text.Json |
-
----
-
-## ❌ معایب نسبت به System.Text.Json
-
-| ضعف                       | توضیح                                             |
-| ------------------------- | ------------------------------------------------- |
-| سرعت پایین‌تر در حجم بالا | ❌ در مقایسه با System.Text.Json کندتر است        |
-| نیاز به نصب دستی پکیج     | ❌ باید از NuGet نصب شود                          |
-| وزن بیشتر در فایل نهایی   | ❌ مخصوصاً برای موبایل یا Unity ممکن است مهم باشد |
+| معیار                     | Newtonsoft.Json                | System.Text.Json (Net 8)                                  |
+| ------------------------- | ------------------------------ | --------------------------------------------------------- |
+| ویژگی‌های پیشرفته         | کامل (TypeNameHandling, JPath) | محدودتر (ـ)                                               |
+| سرعت خام                  | کمی کندتر در سناریوهای پایه    | سریع‌تر (Native)                                          |
+| پشتیبانی Unity ‎(IL2CPP)‎ | بله (بدون AOT issues)          | ممکن است نیاز به `JsonSourceGen` و تنظیمات AOT داشته باشد |
+| اکوسیستم و مستندات        | گسترده، آموزش‌های زیاد         | در حال رشد                                                |
+| حجم بسته                  | \~600 KB DLL                   | بخشی از ‎.NET‎ (بدون DLL اضافی)                           |
 
 ---
 
-اگر بخوای JSON تو در تو، آرایه‌ای، یا داینامیک داشته باشی هم می‌تونم با همین روش مثال بزنم. فقط بگو چه ساختاری داری.
+## جمع‌بندی
 
-## برای json های داینامیک
-
-سؤال بسیار خوبی پرسیدی.
-
-### ❓ مشکل:
-
-وقتی از **کلاس (POCO)** استفاده می‌کنی، فقط به **فیلدهایی که در کلاس تعریف شده‌اند** دسترسی داری. اگر JSON کلیدهای جدیدی (Properties) داشته باشه که در کلاس وجود ندارند، اون فیلدها **دریافت نمی‌شن** و **قابل استفاده نیستند**.
-
----
-
-## ✅ راه‌حل‌ها برای مدیریت **کلیدهای غیرمنتظره / پویا** در کنار کلاس:
-
-### ✳️ 1. استفاده از `Dictionary<string, object>` برای فیلدهای اضافی
-
-```csharp
-public class User
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-
-    [JsonExtensionData]
-    public Dictionary<string, JsonElement> ExtraFields { get; set; }
-}
-```
-
-### 📌 کاربرد:
-
-```json
-{
-    "id": 1,
-    "name": "Ali",
-    "age": 30,
-    "city": "Tehran"
-}
-```
-
-کد:
-
-```csharp
-var user = JsonSerializer.Deserialize<User>(json);
-Console.WriteLine(user.ExtraFields["age"]);   // خروجی: 30
-Console.WriteLine(user.ExtraFields["city"]);  // خروجی: "Tehran"
-```
-
----
-
-### ✳️ 2. استفاده از `JObject` برای JSON داینامیک (در Newtonsoft)
-
-```csharp
-JObject obj = JObject.Parse(json);
-Console.WriteLine(obj["name"]);      // فیلدهای کلاس
-Console.WriteLine(obj["somethingNew"]); // فیلدی که کلاس نداشت ولی JSON داشت
-```
-
-مزیت این روش اینه که لازم نیست هیچ کلاسی تعریف کنی.
-
----
-
-### ✳️ 3. ترکیب کلاس + JObject
-
-اگر فیلدهای اصلی رو با کلاس بخوای بخونی، و باقی رو هم با JObject، می‌تونی به‌صورت ترکیبی استفاده کنی:
-
-```csharp
-var fullJson = JObject.Parse(json);
-
-// مرحله اول: فیلدهای ثابت
-var user = fullJson.ToObject<User>();
-
-// مرحله دوم: فیلدهای اضافی
-foreach (var prop in fullJson.Properties())
-{
-    if (!typeof(User).GetProperties().Any(p => p.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase)))
-    {
-        Console.WriteLine($"فیلد اضافه: {prop.Name} = {prop.Value}");
-    }
-}
-```
-
----
-
-## 🔚 نتیجه‌گیری:
-
-| روش                     | مزیت                        | مناسب برای              |
-| ----------------------- | --------------------------- | ----------------------- |
-| `[JsonExtensionData]`   | ساده، درون کلاس             | System.Text.Json        |
-| `JObject`               | کنترل کامل، JSON پویا       | Newtonsoft.Json         |
-| ترکیبی (POCO + JObject) | همزمان فیلدهای ثابت و متغیر | پروژه‌های واقعی و منعطف |
-
----
-
-اگه خواستی، با یک JSON خاص برات هر سه روش رو با مثال واقعی بزنم. فقط JSON رو بفرست.
+-   برای **پروژه‌های Unity** که نیاز به پشتیبانی ‎IL2CPP‎، **انعطاف حداکثری** و **LINQ to JSON** دارند، **Newtonsoft.Json** همچنان گزینهٔ شمارهٔ یک است.
+-   با استفادهٔ هوشمندانه از **Settings**، **Converters** و **Reader/Writer** می‌توانید هم خوانایی کد و هم عملکرد را بهینه کنید.
+-   در پروژه‌های بسیار Performance-critical یا سایز باینری کوچک، گزینه‌های دیگری مثل ‎`System.Text.Json`‎ یا even **MessagePack** را نیز بسنجید.
