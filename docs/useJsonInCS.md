@@ -45,17 +45,15 @@ var restored = JsonConvert.DeserializeObject<Player>(json);
 
 ## جدول کلیدی‌ترین کلاس‌ها و متدها
 
-| نوع/کلاس                      | متدهای مهم                                                                                       | توضیح کوتاه                                 | مثال ساده                                                |
-| ----------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------------------- |
-| **JsonConvert (static)**      | `SerializeObject(obj, settings?)`<br>`DeserializeObject<T>()`<br>`SerializeXmlNode(XmlNode)`     | ساده‌ترین راه تبدیل شیء/رشته                | `JsonConvert.SerializeObject(list)`                      |
-| **JsonSerializer**            | `Serialize(TextWriter, obj)`<br>`Deserialize<T>(TextReader)`                                     | ‌ عملکردِ پایین‌سطحی و قابلِ تنظیم          | استفاده با `JsonTextWriter`                              |
-| **JsonSerializerSettings**    | پیکربندی عمومی مثل:<br>`Formatting`<br>`NullValueHandling`<br>`ContractResolver`<br>`Converters` | یک‌بار بسازید و در کل پروژه استفاده کنید    | `new JsonSerializerSettings{ NullValueHandling=Ignore }` |
-| **JObject / JArray / JToken** | `Parse(string)`<br>`SelectToken(path)`<br>`ToObject<T>()`                                        | دستکاری ‎‎JSON‎‎ بدون مدل C# (LINQ to JSON) | `JObject.Parse(json)["name"]`                            |
-| **JsonTextReader / Writer**   | جریان‌محور (Forward-only) و بسیار سریع                                                           | برای فایل‌های خیلی بزرگ                     | `using var r = new JsonTextReader(sr)`                   |
-| **JsonConverter (abstract)**  | `WriteJson`, `ReadJson`, `CanConvert`                                                            | ساخت کانورتر سفارشی برای انواع پیچیده       | تبدیل ‎`Vector3`‎ یونیتی                                 |
-| **ContractResolver**          | `ResolveContract`, `CreateProperties`                                                            | کنترل سطحِ فیلد/پراپرتی در سریال‌سازی       | Mask کردن فیلدهای حساس                                   |
-
----
+| نوع/کلاس                      | متدهای مهم                                                                                           | توضیح کوتاه                                 | مثال ساده                                                   |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------- | ----------------------------------------------------------- |
+| **JsonConvert (static)**      | - `SerializeObject(obj, settings?)`<br/>- `DeserializeObject<T>()`<br/>- `SerializeXmlNode(XmlNode)` | ساده‌ترین راه تبدیل شیء/رشته                | `JsonConvert.SerializeObject(list)`                         |
+| **JsonSerializer**            | - `Serialize(TextWriter, obj)`<br/>- `Deserialize<T>(TextReader)`                                    | ‌عملکردِ پایین‌سطحی و قابلِ تنظیم           | استفاده با `JsonTextWriter`                                 |
+| **JsonSerializerSettings**    | - `Formatting`<br/>- `NullValueHandling`<br/>- `ContractResolver`<br/>- `Converters`                 | یک‌بار بسازید و در کل پروژه استفاده کنید    | `new JsonSerializerSettings { NullValueHandling = Ignore }` |
+| **JObject / JArray / JToken** | - `Parse(string)`<br/>- `SelectToken(path)`<br/>- `ToObject<T>()`                                    | دستکاری ‎‎JSON‎‎ بدون مدل C# (LINQ to JSON) | `JObject.Parse(json)["name"]`                               |
+| **JsonTextReader / Writer**   | - جریان‌محور (Forward-only) و بسیار سریع                                                             | برای فایل‌های خیلی بزرگ                     | `using var r = new JsonTextReader(sr)`                      |
+| **JsonConverter (abstract)**  | - `WriteJson`<br/>- `ReadJson`<br/>- `CanConvert`                                                    | ساخت کانورتر سفارشی برای انواع پیچیده       | تبدیل ‎`Vector3`‎ یونیتی                                    |
+| **ContractResolver**          | - `ResolveContract`<br/>- `CreateProperties`                                                         | کنترل سطحِ فیلد/پراپرتی در سریال‌سازی       | Mask کردن فیلدهای حساس                                      |
 
 ## ویژگی‌ها و تنظیمات (Attributes/Settings)
 
