@@ -72,6 +72,18 @@ const config = {
         ({
             // Replace with your project's social card
             image: "img/docusaurus-social-card.jpg",
+            // فعال‌سازی دکمه hide/show برای sidebar
+            docs: {
+                sidebar: {
+                    hideable: true,
+                    autoCollapseCategories: true,
+                },
+            },
+            // تنظیمات Table of Contents
+            tableOfContents: {
+                minHeadingLevel: 2,
+                maxHeadingLevel: 5,
+            },
             navbar: {
                 title: "آموزش C# و Unity",
                 logo: {

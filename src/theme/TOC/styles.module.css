@@ -1,0 +1,87 @@
+.tocContainer {
+  position: sticky;
+  top: calc(var(--ifm-navbar-height, 3.75rem) + 0.5rem);
+  height: calc(100vh - var(--ifm-navbar-height, 3.75rem) - 0.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stickyToc {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+  width: 100%;
+}
+
+.tocToggle {
+  background: var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tocToggleFixed {
+  position: fixed;
+  top: calc(var(--ifm-navbar-height, 3.75rem) + 1rem);
+  left: 12px;
+  z-index: 1000;
+}
+
+.tocToggle:hover {
+  background: var(--ifm-color-emphasis-300);
+  transform: scale(1.05);
+}
+
+.tocToggle:active {
+  transform: scale(0.95);
+}
+
+[data-theme='dark'] .tocToggle {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] .tocToggle:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.tocContent {
+  margin-top: 0.5rem;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.tocContentHidden {
+  opacity: 0;
+  transform: translateX(-12px);
+  pointer-events: none;
+}
+
+html[dir='rtl'] .tocContentHidden {
+  transform: translateX(12px);
+}
+
+html[dir='rtl'] .tocToggle {
+  left: auto !important;
+  right: 12px !important;
+}
+
+html[dir='rtl'] .tocToggleFixed {
+  left: auto;
+  right: 12px;
+}

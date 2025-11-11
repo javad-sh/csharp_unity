@@ -30,3 +30,46 @@
     --ifm-color-primary-lightest: #4fddbf;
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* وقتی TOC مخفی است، محتوا را به تمام عرض گسترش بده */
+body:not(.toc-hidden) .theme-doc-toc-desktop {
+  opacity: 1;
+}
+
+.theme-doc-toc-desktop,
+.col--3,
+.docItemCol_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-styles-module,
+[class*="docItemCol"],
+.row > div:first-child {
+  transition: width 0.3s ease, max-width 0.3s ease, flex 0.3s ease, opacity 0.3s ease;
+}
+
+body.toc-hidden .theme-doc-toc-desktop {
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+}
+
+body.toc-hidden .col--3 {
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  flex: 0 0 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body.toc-hidden .docItemCol_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-styles-module,
+body.toc-hidden [class*="docItemCol"] {
+  max-width: 100% !important;
+  width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+body.toc-hidden .row > div:first-child {
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
