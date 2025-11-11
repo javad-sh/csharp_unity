@@ -67,22 +67,7 @@ const config = {
         ],
     ],
 
-    themes: [
-        [
-            require.resolve("@easyops-cn/docusaurus-search-local"),
-            /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-            ({
-                hashed: true,
-                language: ["en"],
-                highlightSearchTermsOnTargetPage: true,
-                explicitSearchResultPath: true,
-                indexBlog: true,
-                indexDocs: true,
-                searchResultLimits: 8,
-                searchResultContextMaxLength: 50,
-            }),
-        ],
-    ],
+    themes: ["docusaurus-lunr-search"],
 
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
