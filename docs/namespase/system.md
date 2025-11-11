@@ -1,5 +1,5 @@
 ---
-title: system
+title: System Namespace
 sidebar_position: 2
 ---
 

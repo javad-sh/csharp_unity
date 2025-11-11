@@ -1,6 +1,6 @@
 ---
 title: System.Exception
-sidebar_position: 9
+sidebar_position: 3
 ---
 
 # System.Exception

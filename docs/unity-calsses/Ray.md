@@ -1,6 +1,6 @@
 ---
-title: Ray
-sidebar_position: 4
+title: Ray (پرتو)
+sidebar_position: 7
 ---
 
 # Ray

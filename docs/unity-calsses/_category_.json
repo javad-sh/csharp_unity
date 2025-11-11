@@ -1,7 +1,8 @@
 {
-  "label": "کلاس های یونیتی",
-  "position": 4,
+  "label": "کلاس‌های مهم Unity",
+  "position": 10,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "description": "کلاس‌های پرکاربرد و مهم در Unity"
   }
 }

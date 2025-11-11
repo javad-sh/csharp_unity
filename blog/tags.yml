@@ -1,19 +1,24 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+csharp:
+  label: C#
+  permalink: /csharp
+  description: مقالات مربوط به زبان برنامه‌نویسی سی‌شارپ
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+unity:
+  label: Unity
+  permalink: /unity
+  description: مقالات مربوط به موتور بازی‌سازی Unity
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+oop:
+  label: برنامه‌نویسی شی‌گرا
+  permalink: /oop
+  description: مفاهیم و الگوهای برنامه‌نویسی شی‌گرا
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+tutorial:
+  label: آموزش
+  permalink: /tutorial
+  description: آموزش‌های گام‌به‌گام
+
+tips:
+  label: نکات و ترفندها
+  permalink: /tips
+  description: نکات کاربردی و ترفندهای برنامه‌نویسی

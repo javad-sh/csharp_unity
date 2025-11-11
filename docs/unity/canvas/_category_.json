@@ -1,7 +1,8 @@
 {
-  "label": "canvas",
-  "position": 2,
+  "label": "Canvas و UI",
+  "position": 3,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "description": "رابط کاربری و Canvas در Unity"
   }
 }

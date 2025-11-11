@@ -1,6 +1,6 @@
 ---
-title: Vector
-sidebar_position: 1
+title: Vector (بردار)
+sidebar_position: 2
 ---
 
 # Vector

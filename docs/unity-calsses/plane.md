@@ -1,6 +1,6 @@
 ---
-title: Plane
-sidebar_position: 3
+title: Plane (صفحه)
+sidebar_position: 6
 ---
 
 # Plane

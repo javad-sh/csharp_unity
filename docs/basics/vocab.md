@@ -1,5 +1,5 @@
 ---
-title: لغت نامه
+title: واژگان و کلمات کلیدی
 sidebar_position: 2
 ---
 

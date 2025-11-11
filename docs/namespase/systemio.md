@@ -1,9 +1,9 @@
 ---
-title: system.io
-sidebar_position: 6
+title: System.IO
+sidebar_position: 4
 ---
 
-# system.io
+# System.IO
 
 فضای نام (Namespace) System.IO در #C برای کار با فایل‌ها، دایرکتوری‌ها، استریم‌ها (جریان داده)، خواندن/نوشتن داده‌ها، و دسترسی به سیستم فایل طراحی شده است.
 

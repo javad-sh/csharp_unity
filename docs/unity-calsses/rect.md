@@ -1,6 +1,6 @@
 ---
-title: Rect
-sidebar_position: 7
+title: Rect (مستطیل)
+sidebar_position: 5
 ---
 
 # Rect

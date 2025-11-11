@@ -1,6 +1,6 @@
 ---
-title: Bounds
-sidebar_position: 5
+title: Bounds (محدوده)
+sidebar_position: 4
 ---
 
 # Bounds

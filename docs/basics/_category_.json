@@ -1,7 +1,8 @@
 {
-  "label": "موارد پایه",
+  "label": "مبانی برنامه‌نویسی",
   "position": 2,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "description": "مبانی و اصول اولیه برنامه‌نویسی در C#"
   }
 }

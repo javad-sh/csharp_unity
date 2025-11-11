@@ -4,32 +4,32 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: 'آموزش گام‌به‌گام',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        از صفر تا صد برنامه‌نویسی C# و بازی‌سازی با Unity را به صورت منظم و ساختاریافته یاد بگیرید.
+        مناسب برای تمام سطوح از مبتدی تا پیشرفته.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'مستندات فارسی کامل',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        تمام مفاهیم اساسی C# و Unity به زبان فارسی با مثال‌های کاربردی.
+        دیگر نیازی به جستجوی مداوم در منابع انگلیسی نیست.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'نکات و الگوهای کاربردی',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Design Patterns، بهترین شیوه‌های کدنویسی و نکات حرفه‌ای برای
+        توسعه پروژه‌های واقعی و حرفه‌ای.
       </>
     ),
   },

@@ -1,7 +1,8 @@
 {
-  "label": "namespae",
-  "position": 0,
+  "label": "Namespace و کتابخانه‌ها",
+  "position": 7,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "description": "آشنایی با Namespace و کتابخانه‌های سیستم در C#"
   }
 }

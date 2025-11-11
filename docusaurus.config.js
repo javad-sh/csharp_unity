@@ -10,8 +10,8 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: "My Site",
-    tagline: "Dinosaurs are cool",
+    title: "آموزش C# و Unity",
+    tagline: "مرجع فارسی یادگیری برنامه‌نویسی سی‌شارپ و توسعه بازی با یونیتی",
     favicon: "img/favicon.ico",
 
     // Set the production url of your site here
@@ -47,9 +47,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: "./sidebars.js",
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
-                    editUrl: "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+                    editUrl: "https://github.com/javad-sh/csharp_unity/tree/main/",
                 },
                 blog: {
                     showReadingTime: true,
@@ -57,10 +55,7 @@ const config = {
                         type: ["rss", "atom"],
                         xslt: true,
                     },
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
-                    editUrl: "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-                    // Useful options to enforce blogging best practices
+                    editUrl: "https://github.com/javad-sh/csharp_unity/tree/main/",
                     onInlineTags: "warn",
                     onInlineAuthors: "warn",
                     onUntruncatedBlogPosts: "warn",
@@ -78,9 +73,9 @@ const config = {
             // Replace with your project's social card
             image: "img/docusaurus-social-card.jpg",
             navbar: {
-                title: "My Site",
+                title: "آموزش C# و Unity",
                 logo: {
-                    alt: "My Site Logo",
+                    alt: "لوگوی سایت آموزش C# و Unity",
                     src: "img/logo.svg",
                 },
                 items: [
@@ -88,12 +83,12 @@ const config = {
                         type: "docSidebar",
                         sidebarId: "tutorialSidebar",
                         position: "left",
-                        label: "Tutorial",
+                        label: "مستندات",
                     },
-                    { to: "/blog", label: "Blog", position: "left" },
+                    { to: "/blog", label: "بلاگ", position: "left" },
                     {
-                        href: "https://github.com/facebook/docusaurus",
-                        label: "GitHub",
+                        href: "https://github.com/javad-sh/csharp_unity",
+                        label: "گیت‌هاب",
                         position: "right",
                     },
                 ],

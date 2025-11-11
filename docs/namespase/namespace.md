@@ -1,5 +1,5 @@
 ---
-title: namespace
+title: مفهوم Namespace
 sidebar_position: 1
 ---
 

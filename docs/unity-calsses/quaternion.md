@@ -1,6 +1,6 @@
 ---
-title: Quaternion
-sidebar_position: 2
+title: Quaternion (چرخش)
+sidebar_position: 3
 ---
 
 # Quaternion

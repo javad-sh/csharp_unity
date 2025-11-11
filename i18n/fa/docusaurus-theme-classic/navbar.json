@@ -1,22 +1,22 @@
 {
   "title": {
-    "message": "My Site",
-    "description": "The title in the navbar"
+    "message": "آموزش C# و Unity",
+    "description": "عنوان در نوار ناوبری"
   },
   "logo.alt": {
-    "message": "My Site Logo",
-    "description": "The alt text of navbar logo"
+    "message": "لوگوی سایت آموزش C# و Unity",
+    "description": "متن جایگزین لوگوی نوار ناوبری"
   },
-  "item.label.Tutorial": {
-    "message": "Tutorial",
-    "description": "Navbar item with label Tutorial"
+  "item.label.مستندات": {
+    "message": "مستندات",
+    "description": "آیتم نوار ناوبری با برچسب مستندات"
   },
-  "item.label.Blog": {
-    "message": "Blog",
-    "description": "Navbar item with label Blog"
+  "item.label.بلاگ": {
+    "message": "بلاگ",
+    "description": "آیتم نوار ناوبری با برچسب بلاگ"
   },
-  "item.label.GitHub": {
-    "message": "GitHub",
-    "description": "Navbar item with label GitHub"
+  "item.label.گیت‌هاب": {
+    "message": "گیت‌هاب",
+    "description": "آیتم نوار ناوبری با برچسب گیت‌هاب"
   }
 }
