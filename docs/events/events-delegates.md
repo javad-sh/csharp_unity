@@ -1,6 +1,6 @@
 ---
 title: Events و Delegates
-sidebar_position: 5
+sidebar_position: 2
 ---
 
 # رویداد ها
